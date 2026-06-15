@@ -1,0 +1,42 @@
+bundle:
+  name: my-databricks-app5
+
+variables:
+  sql_warehouse_id:
+    description: SQL Warehouse ID
+  genie_space_id:
+    description: Default Genie Space ID
+  genie_space_name:
+    description: Genie Space display name
+
+resources:
+  apps:
+    app:
+      name: "my-databricks-app5"
+      description: "A Databricks App powered by AppKit"
+      source_code_path: ./
+      user_api_scopes:
+        - dashboards.genie
+
+      # The resources which this app has access to.
+      resources:
+        - name: sql-warehouse
+          sql_warehouse:
+            id: ${var.sql_warehouse_id}
+            permission: CAN_USE
+        - name: genie-space
+          genie_space:
+            name: ${var.genie_space_name}
+            space_id: ${var.genie_space_id}
+            permission: CAN_RUN
+
+targets:
+  default:
+    default: true
+    workspace:
+      host: https://dbc-3d000ac2-9906.cloud.databricks.com
+
+    variables:
+      sql_warehouse_id: 91b6c66ab25fb114
+      genie_space_id: 01f168e506931053a55e2625d36e27c3
+      genie_space_name: Healthcare Facility Insights
